@@ -1,0 +1,14 @@
+POST https://rest-api.app/employees/2/update
+Content-Type: application/json
+
+{
+    "role": 555
+}
+
+echo "# api" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M master
+git remote add origin https://github.com/MamcoSy/api.git
+git push -u origin master

@@ -1,0 +1,17 @@
+{
+  "name": "mamadou/rest-api",
+  "description": "",
+  "authors": [
+    {
+      "name": "MamcoSy",
+      "email": "mamco.aly.sy@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "MamcoSy\\": "./MamadouAlySy/src",
+      "App\\": "./app"
+    }
+  }
+}
