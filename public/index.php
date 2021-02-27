@@ -1,6 +1,7 @@
 <?php
 
 use MamcoSy\Http\Request;
+use MamcoSy\Http\Response;
 use MamcoSy\Router\Router;
 
 header('Access-Control-Allow-Origin: *');
@@ -14,7 +15,14 @@ require_once '../routes.php';
 $request = Request::createFromGlobals();
 
 $route = Router::dispatch($request);
+try {
+    $response = $route->call();
 
-$response = $route->call();
+} catch (Exception $e) {
+    $response = new Response(
+        500,
+        json_encode(['message' => 'une erreur'])
+    );
+}
 
 $response->send();

@@ -1,7 +1,5 @@
-POST http://localhost:3001/login
+POST http://localhost:3001/employees/1/update
 
-Content-Type: application/json
 {
-    "username": "emp1",
-    "password": "12345"
+    
 }

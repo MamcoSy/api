@@ -75,11 +75,9 @@ class HomeController
 
     public function login()
     {
-        $donnes = @file_get_contents('php://input');
-        $donnes = json_decode($donnes);
-        var_dump($donnes);
-        die();
-        $user = Employees::login($donnes['username'], $donnes['password']);
+        $donnes = file_get_contents('php://input');
+        $donnes = json_decode($donnes, true);
+        $user   = Employees::login(['username' => $donnes['username'], 'password' => sha1($donnes['password'])]);
         if ($user) {
             return new Response(
                 201,
@@ -88,8 +86,8 @@ class HomeController
             );
         } else {
             return new Response(
-                401,
-                json_encode(['message' => 'Invalid Request']),
+                500,
+                json_encode(['message' => 'Nom utilisateur et mot de pass incorrecte']),
                 $this->defaultHeaders
             );
         }

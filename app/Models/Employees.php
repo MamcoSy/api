@@ -42,10 +42,10 @@ class Employees extends BaseModel
             ->execute();
     }
 
-    public static function login(string $username, string $password)
+    public static function login(array $data)
     {
-        $user = self::getConnection()->prepare('SELECT * FROM users WHERE username =? AND password=?');
-        $user->execute([$username, $password]);
+        $user = self::getConnection()->prepare('SELECT * FROM employees WHERE username = :username AND password= :password ');
+        $user->execute($data);
 
         return $user->fetch(PDO::FETCH_ASSOC);
     }
