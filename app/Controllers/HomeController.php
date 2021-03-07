@@ -79,6 +79,8 @@ class HomeController
         $donnes = json_decode($donnes, true);
         $user   = Employees::login(['username' => $donnes['username'], 'password' => sha1($donnes['password'])]);
         if ($user) {
+            $_SESSION['user'] = $user;
+
             return new Response(
                 201,
                 json_encode($user),
@@ -91,5 +93,39 @@ class HomeController
                 $this->defaultHeaders
             );
         }
+    }
+
+    public function pointage()
+    {
+        $response = new Response(
+            200,
+            json_encode(Employees::allPointage()),
+            $this->defaultHeaders
+        );
+        $response->headers->set('Access-Control-Allow-Methods', 'GET');
+
+        return $response;
+
+    }
+
+    public function InsertPointage()
+    {
+        $donnes = file_get_contents('php://input');
+        $donnes = json_decode($donnes, true);
+        // var_dump($donnes);
+        if ($emp = Employees::search($donnes['username'])) {
+            if (Employees::point($emp['id'])) {
+                $response = new Response(
+                    201,
+                    json_encode(['Message ' => 'pointer avec success']),
+                    $this->defaultHeaders
+                );
+            } else {
+                $response = new Response();
+            }
+        }
+        $response->headers->set('Access-Control-Allow-Methods', 'POST');
+
+        return $response;
     }
 }

@@ -11,7 +11,7 @@ class Employees extends BaseModel
     public static function all()
     {
         return self::getConnection()
-            ->query('SELECT * FROM employees')
+            ->query('SELECT * FROM employees WHERE role = 0')
             ->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -48,5 +48,50 @@ class Employees extends BaseModel
         $user->execute($data);
 
         return $user->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function allPointage()
+    {
+        return self::getConnection()
+            ->query('SELECT id_p,heure_arriver,heure_descente,nom,prenom FROM pointage
+            INNER JOIN employees ON pointage.id_emp = employees.id WHERE role = 0')
+            ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function search(string $username)
+    {
+        $employees = self::getConnection()
+            ->prepare('SELECT * FROM employees WHERE username LIKE ?');
+        $employees->execute([$username]);
+
+        return $employees->fetch();
+    }
+
+    public static function point($id)
+    {
+        $search = self::getConnection()
+            ->prepare('SELECT etat FROM pointage WHERE id_emp = ?');
+        $search->execute([$id]);
+        $result = $search->fetch();
+        if ($result) {
+            if ($result['etat'] == 0) {
+
+                return self::getConnection()
+                    ->prepare('UPDATE pointage SET etat = ? , heure_descente = ? WHERE id_emp = ?')
+                    ->execute(['1', date('H:i:s'), $id]);
+
+            }
+
+            return false;
+        } else {
+
+            return self::getConnection()
+                ->prepare('INSERT INTO pointage (heure_arriver,id_emp) VALUES (?,?)')
+                ->execute([date('H:i:s'), $id]);
+
+        }
+
+        return false;
+
     }
 }
