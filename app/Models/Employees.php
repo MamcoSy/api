@@ -70,7 +70,7 @@ class Employees extends BaseModel
     public static function point($id)
     {
         $search = self::getConnection()
-            ->prepare('SELECT etat FROM pointage WHERE id_emp = ?');
+            ->prepare('SELECT etat  FROM pointage WHERE id_emp = ?');
         $search->execute([$id]);
         $result = $search->fetch();
         if ($result) {
@@ -79,19 +79,16 @@ class Employees extends BaseModel
                 return self::getConnection()
                     ->prepare('UPDATE pointage SET etat = ? , heure_descente = ? WHERE id_emp = ?')
                     ->execute(['1', date('H:i:s'), $id]);
-
             }
 
             return false;
         } else {
 
             return self::getConnection()
-                ->prepare('INSERT INTO pointage (heure_arriver,id_emp) VALUES (?,?)')
-                ->execute([date('H:i:s'), $id]);
-
+                ->prepare('INSERT INTO pointage (heure_arriver,date_today,id_emp) VALUES (?,?,?)')
+                ->execute([date('H:i:s'), date('Y-m-d'), $id]);
         }
 
         return false;
-
     }
 }

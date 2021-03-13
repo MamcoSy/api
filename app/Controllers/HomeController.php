@@ -112,9 +112,9 @@ class HomeController
     {
         $donnes = file_get_contents('php://input');
         $donnes = json_decode($donnes, true);
-        // var_dump($donnes);
+        $date   = date('Y-m-d');
         if ($emp = Employees::search($donnes['username'])) {
-            if (Employees::point($emp['id'])) {
+            if (Employees::point($emp['id'], $date)) {
                 $response = new Response(
                     201,
                     json_encode(['Message ' => 'pointer avec success']),

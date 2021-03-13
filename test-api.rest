@@ -1,5 +1,5 @@
-POST http://localhost:3001/InsertPointage
+POST http://localhost:3001/insertPointage
 
 {
-        "username":"hhh"
+        "username":"emp1"
 }

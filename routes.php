@@ -9,4 +9,4 @@ Router::get('/pointage', 'App\Controllers\HomeController@pointage');
 Router::get('/employees/{int:id}', 'App\Controllers\HomeController@findEmployee');
 Router::get('/employees/{int:id}/delete', 'App\Controllers\HomeController@deleteEmployee');
 Router::post('/employees/{int:id}/update', 'App\Controllers\HomeController@updateEmployee');
-Router::post('/InsertPointage', 'App\Controllers\HomeController@InsertPointage');
+Router::post('/insertPointage', 'App\Controllers\HomeController@InsertPointage');
